@@ -273,6 +273,21 @@ $(document).on("keydown" , "#navbar_search_input_container #navbar_search_input"
 		url: argonConfig.wp_path + "?s=" + encodeURI(word)
 	});
 });
+/*顶栏搜索 (Mobile)*/
+$(document).on("keydown" , "#navbar_search_input_mobile" , function(e){
+	if (e.keyCode != 13){
+		return;
+	}
+	let word = $(this).val();
+	$("#navbar_global .collapse-close button").click();
+	if (word == ""){
+		return;
+	}
+	let scrolltop = $(document).scrollTop();
+	$.pjax({
+		url: argonConfig.wp_path + "?s=" + encodeURI(word)
+	});
+});
 /*侧栏搜索*/
 $(document).on("click" , "#leftbar_search_container" , function(){
 	$(".leftbar-search-button").addClass("open");
@@ -1170,14 +1185,7 @@ $(document).on("click" , ".show-full-comment" , function(){
 	$(this).parent().removeClass("comment-folded").addClass("comment-unfolded");
 });
 /*评论文字头像*/
-document.addEventListener("error", function(e){
-	let img = $(e.target);
-	if (!img.hasClass("avatar")){
-		return;
-	}
-	if (!img.parent().hasClass("comment-item-avatar")){
-		return;
-	}
+function generateCommentTextAvatar(img){
 	let emailHash = img.attr("src").match(/([a-f\d]{32}|[A-F\d]{32})/)[0];
 	let hash = 0;
 	for (i in emailHash){
@@ -1186,7 +1194,32 @@ document.addEventListener("error", function(e){
 	let colors = ['#e25f50', '#f25e90', '#bc67cb', '#9672cf', '#7984ce', '#5c96fa', '#7bdeeb', '#45d0e2', '#48b7ad', '#52bc89', '#9ace5f', '#d4e34a', '#f9d715', '#fac400', '#ffaa00', '#ff8b61', '#c2c2c2', '#8ea3af', '#a1877d', '#a3a3a3', '#b0b6e3', '#b49cde', '#c2c2c2', '#7bdeeb', '#bcaaa4', '#aed77f'];
 	let text = $(".comment-name", img.parent().parent()).text().trim()[0];
 	img.parent().html('<div class="avatar avatar-40 photo comment-text-avatar" style="background-color: ' + colors[hash] + ';">' + text + '</div>');
+}
+document.addEventListener("error", function(e){
+	let img = $(e.target);
+	if (!img.hasClass("avatar")){
+		return;
+	}
+	if (!img.parent().hasClass("comment-item-avatar")){
+		return;
+	}
+	generateCommentTextAvatar(img);
 }, true);
+function refreshCommentTextAvatar(){
+	$(".comment-item-avatar > img.avatar").each(function(index, img){
+		if (!img.complete){
+			return;
+		}
+		if (img.naturalWidth !== 0){
+			return false;
+		}
+		generateCommentTextAvatar($(img));
+	});
+}
+refreshCommentTextAvatar();
+$(window).on("load", function(){
+	refreshCommentTextAvatar();
+});
 /*需要密码的文章加载*/
 $(document).on("submit" , ".post-password-form" , function(){
 	$("input[type='submit']", this).attr("disabled", "disabled");
@@ -1384,11 +1417,25 @@ function clampInit(){
 }
 clampInit();
 
+/*Tippy.js*/
+function tippyInit(){
+	//Reference Popover
+	tippy('sup.reference[data-content]:not(tippy-initialized)', {
+		content: (reference) => reference.getAttribute('data-content'),
+		allowHTML: true,
+		interactive: true,theme: 'light scroll-y',
+		delay: [100, 250],
+		animation: 'fade'
+	});
+	$("sup.reference[data-content]:not(tippy-initialized)").addClass("tippy-initialized");
+}
+tippyInit();
+
 /*Pjax*/
 $.pjax.defaults.timeout = 10000;
 $.pjax.defaults.container = ['#primary', '#leftbar_part1_menu', '#leftbar_part2_inner', '.page-information-card-container', '#wpadminbar'];
 $.pjax.defaults.fragment = ['#primary', '#leftbar_part1_menu', '#leftbar_part2_inner', '.page-information-card-container', '#wpadminbar'];
-$(document).pjax("a[href]:not([no-pjax]):not(.no-pjax):not([target='_blank']):not([download])")
+$(document).pjax("a[href]:not([no-pjax]):not(.no-pjax):not([target='_blank']):not([download]):not(.reference-link):not(.reference-list-backlink)")
 .on('pjax:click', function(e, f, g){
 	if (argonConfig.disable_pjax == true){
 		e.preventDefault();
@@ -1420,12 +1467,11 @@ $(document).pjax("a[href]:not([no-pjax]):not(.no-pjax):not([target='_blank']):no
 	NProgress.inc();
 	try{
 		if (MathJax != undefined){
-			MathJax.typeset();
-		}
-	}catch (err){}
-	try{
-		if ($("script#mathjax_v2_script" , $vdom).length > 0){
-			MathJax.Hub.Typeset();
+			if (MathJax.Hub != undefined){
+				MathJax.Hub.Typeset();
+			}else{
+				MathJax.typeset();
+			}
 		}
 	}catch (err){}
 	try{
@@ -1445,6 +1491,7 @@ $(document).pjax("a[href]:not([no-pjax]):not(.no-pjax):not([target='_blank']):no
 	highlightJsRender();
 	panguInit();
 	clampInit();
+	tippyInit();
 	getGithubInfoCardContent();
 	showPostOutdateToast();
 	calcHumanTimesOnPage();
@@ -1463,6 +1510,21 @@ $(document).pjax("a[href]:not([no-pjax]):not(.no-pjax):not([target='_blank']):no
 	lazyloadInit();
 });
 
+/*Reference 跳转*/
+$(document).on("click", ".reference-link , .reference-list-backlink" , function(e){
+	e.preventDefault();
+	$target = $($(this).attr("href"));
+	$("body,html").animate({
+		scrollTop: $target.offset().top - document.body.clientHeight / 2 - 75
+	}, 500)
+	setTimeout(function(){
+		if ($target.is("li")){
+			$(".space", $target).focus();
+		}else{
+			$target.focus();
+		}
+	}, 1);
+});
 
 /*Tags Dialog pjax 加载后自动关闭*/
 $(document).on("click" , "#blog_tags .tag" , function(){
@@ -1474,7 +1536,7 @@ $(document).on("click" , "#blog_categories .tag" , function(){
 
 /*侧栏 & 顶栏菜单手机适配*/
 !function(){
-	$(document).on("click" , "#fabtn_open_sidebar" , function(){
+	$(document).on("click" , "#fabtn_open_sidebar, #open_sidebar" , function(){
 		$("html").addClass("leftbar-opened");
 	});
 	$(document).on("click" , "#sidebar_mask" , function(){

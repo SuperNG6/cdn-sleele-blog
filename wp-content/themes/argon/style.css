@@ -3,7 +3,7 @@ Theme Name: argon
 Author: solstice23
 Author URI: https://solstice23.top/
 Description: 轻盈、简洁、美观的 Wordpress 主题
-Version: 1.1.0.1
+Version: 1.1.7
 License: GNU General Public License v3.0
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Tags: 简约, 两栏, 侧栏在左边, 浮动侧栏, 文章目录, 自适应, 夜间模式, 可自定义
@@ -97,6 +97,9 @@ article .post-content a:before{
 }
 article .post-content a:hover:before{
 	transform: scaleX(1);
+}
+article .post-content a.no-hover-underline:before{
+	display: none;
 }
 article pre:not(.hljs-codeblock){
 	font-family: Consolas,Menlo,Monaco,'Andale Mono WT','Andale Mono','Lucida Console','Lucida Sans Typewriter','DejaVu Sans Mono','Bitstream Vera Sans Mono','Liberation Mono','Nimbus Mono L','Courier New',Courier,monospace;
@@ -264,6 +267,9 @@ html.use-big-shadow *.shadow-sm{
 .article-header-style-2 article h3:before {
 	height: 16px;
 	transform: translateY(-1px);
+}
+.no-results header h1:after{
+	display: none !important;
 }
 /*卡片圆角*/
 .card{
@@ -462,7 +468,7 @@ html.darkmode.amoled-dark #navbar-main{
 		max-width: 1200px !important;
 	}
 }
-@media (min-width: 992px){
+@media (min-width: 900px){
 	.navbar-main .container {
 		max-width: 100%;
 	}
@@ -472,6 +478,7 @@ html.darkmode.amoled-dark #navbar-main{
 }
 .navbar-brand {
 	text-transform: none;
+	vertical-align: middle;
 }
 .navbar-brand:focus , .navbar-brand:hover{
 	color: #fff !important;
@@ -1468,6 +1475,73 @@ html.filter-grayscale{
 .additional-content-after-post + .post-tags {
 	margin-top: 25px;
 }
+/*Reference*/
+sup.reference {
+	white-space: nowrap;
+	transition: box-shadow .3s ease;
+	border-radius: 1px;
+}
+sup.reference:focus {
+	box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(var(--themecolor-rgbstr), .3);
+	outline: none;
+}
+html.darkmode sup.reference:focus {
+	box-shadow: 0 0 0 2px #424242, 0 0 0 4px rgba(var(--themecolor-rgbstr), .8);
+}
+html.darkmode.amoled-dark sup.reference:focus {
+	box-shadow: 0 0 0 2px #000, 0 0 0 4px rgba(var(--themecolor-rgbstr), .8);
+}
+.tippy-box[data-theme~='scroll-y'] .tippy-content {
+	max-height: 200px;
+	overflow-y: auto;
+}
+html.darkmode .tippy-box[data-theme~=light]{color:#eee;background-color:#363636}html.darkmode .tippy-box[data-theme~=light][data-placement^=top]>.tippy-arrow:before{border-top-color:#363636}html.darkmode .tippy-box[data-theme~=light][data-placement^=bottom]>.tippy-arrow:before{border-bottom-color:#363636}html.darkmode .tippy-box[data-theme~=light][data-placement^=left]>.tippy-arrow:before{border-left-color:#363636}html.darkmode .tippy-box[data-theme~=light][data-placement^=right]>.tippy-arrow:before{border-right-color:#363636}html.darkmode .tippy-box[data-theme~=light]>.tippy-backdrop{background-color:#363636}html.darkmode .tippy-box[data-theme~=light]>.tippy-svg-arrow{fill:#363636}
+html.darkmode.amoled-dark .tippy-box[data-theme~=light]{color:#eee;background-color:#222}html.darkmode.amoled-dark .tippy-box[data-theme~=light][data-placement^=top]>.tippy-arrow:before{border-top-color:#222}html.darkmode.amoled-dark .tippy-box[data-theme~=light][data-placement^=bottom]>.tippy-arrow:before{border-bottom-color:#222}html.darkmode.amoled-dark .tippy-box[data-theme~=light][data-placement^=left]>.tippy-arrow:before{border-left-color:#222}html.darkmode.amoled-dark .tippy-box[data-theme~=light][data-placement^=right]>.tippy-arrow:before{border-right-color:#222}html.darkmode.amoled-dark .tippy-box[data-theme~=light]>.tippy-backdrop{background-color:#222}html.darkmode.amoled-dark .tippy-box[data-theme~=light]>.tippy-svg-arrow{fill:#222}
+.reference-list {
+	padding-left: 0;
+	list-style: inside none;
+	counter-reset: ol;
+	margin-bottom: 0;
+}
+.reference-list li{
+	font-size: 14px;
+	position: relative;
+	display: flex;
+}
+.reference-list li .space {
+	pointer-events: none;
+}
+.reference-list li .space:before {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	display: block;
+	border-radius: 3px;
+	transition: background .3s ease;
+	pointer-events: none;
+	background: transparent;
+}
+.reference-list li .space:focus:before {
+	background: rgba(var(--themecolor-rgbstr), .15);
+}
+.reference-list li:before{
+	text-align: right;
+	counter-increment: ol;
+	content: counter(ol) ". ";
+	white-space: pre;
+}
+.reference-list li > div > *:first-child{
+	margin-right: 5px;
+}
+.reference-list li > div > sup{
+	margin-left: 1px;
+}
+.reference-list li > div > sup:last-of-type{
+	margin-right: 5px;
+}
 /*文章输入密码界面*/
 .post-password-form{
 	margin-top: 45px;
@@ -1565,29 +1639,30 @@ html.filter-grayscale{
 .related-posts {
 	display: block;
 	white-space: nowrap;
-	overflow-x: auto;
 	margin-bottom: 25px;
-	padding: 15px;
-	padding-bottom: 5px;
+	padding: 0; 
+	padding-bottom: 0; 
 }
 .related-post-card {
 	display: inline-block;
-	height: 144px;
-	width: 256px;
-	overflow: hidden;
-	border: 1px solid rgba(108, 119, 147, 0.2);
+	height: 105px;
+	width: 180px;
 	border-radius: 5px;
 	margin-right: 10px;
-	font-size: 18px;
+	font-size: 16px;
 	line-height: 27px;
 	white-space: normal;
 	transition: all .3s ease;
 	position: relative;
+	background: var(--themecolor-gradient);
 }
 .related-post-card:hover {
-	background: rgba(var(--themecolor-rgbstr), .1);
+	opacity: 0.5;
 	box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
 	border-color: transparent;
+}
+.related-post-title.clamp {
+	color: white;
 }
 .related-post-card-container {
 	position: absolute;
@@ -1620,6 +1695,31 @@ html.filter-grayscale{
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+}
+i.related-post-arrow.fa.fa-chevron-right {
+	color: white;
+}
+img.related-post-thumbnail {
+	vertical-align: unset;
+}
+html.darkmode a.related-post-card {
+	background: #303030;
+	opacity: 0.7;
+	border: 1px solid rgba(108, 119, 147, 0.2);
+	border-radius: 5px;
+}
+html.darkmode .related-post-card:hover {
+	opacity: 0.9;
+}
+html.darkmode .related-post-title.clamp {
+	color: var(--themecolor-light);
+}
+html.darkmode.amoled-dark a.related-post-card {
+	background: #000;
+	opacity: 1.0;
+}
+html.darkmode.amoled-dark a.related-post-card:hover {
+	background: #0e0e0e;
 }
 /*文章赞赏*/
 .post-donate {
@@ -2647,7 +2747,7 @@ html.darkmode.amoled-dark .friend-links-style1 .friend-link-description:after {
 .friend-links-style2.friend-links-style2-big .friend-link-links > a {
 	margin-right: 12px;
 }
-@media (min-width: 992px){
+@media (min-width: 900px){
 	.friend-links.friend-links-style2-big .link {
 		max-width: 33.33333%;
 		flex: 0 0 33.33333%;
@@ -3542,7 +3642,9 @@ code[hljs-codeblock-inner] {
 	left: 20px;
 	width: 30px;
 	overflow-x: visible !important;
+	white-space: nowrap;
 	transition: all .3s ease;
+	background: transparent !important;
 }
 .hljs-ln-numbers:before {
 	content: '';
@@ -4199,9 +4301,15 @@ html.darkmode.amoled-dark #content:before , html.darkmode.amoled-dark #content:a
 		height: 20px;
 	}
 }
-@media screen and (max-width:991.98px){
+@media screen and (max-width:900px){
 	.navbar-toggler{
 		outline: none !important;
+	}
+	.navbar-collapse-header{
+		border: none !important;
+	}
+	.navbar-collapse .navbar-collapse-header{
+		margin-bottom: 0 !important;
 	}
 	html.darkmode #navbar_global {
 		background: #424242;
@@ -4213,17 +4321,19 @@ html.darkmode.amoled-dark #content:before , html.darkmode.amoled-dark #content:a
 		background: #eee;
 	}
 	html.darkmode .navbar-collapse .navbar-collapse-header {
-		border-bottom: 1px solid rgba(255,255,255,.1);
+		/*border-bottom: 1px solid rgba(255,255,255,.1);*/
 	}
 
-	.navbar-brand.navbar-icon {
+	/*.navbar-brand.navbar-icon {
 		display: none;
 	}
 	.navbar-brand.navbar-icon-mobile {
 		display: block;
 		margin-right: 5px;
+	}*/
+	.navbar-title{
+		margin-right: 0;
 	}
-
 	#navbar_search_btn_mobile{
 		display: list-item;
 	}
@@ -4240,12 +4350,25 @@ html.darkmode.amoled-dark #content:before , html.darkmode.amoled-dark #content:a
 		z-index: 1049;
 		background: transparent;
 	}
+	.navbar-nav:not(#navbar_search_btn_mobile) > .nav-item i:not(.d-lg-none){
+		margin-right: 8px;
+		text-align: center;
+		width: 14px;
+	}
 
 	.navbar-nav:not(#navbar_search_btn_mobile) > .nav-item i:not(.d-lg-none){
 		margin-right: 8px;
 		text-align: center;
 		width: 14px;
 	}
+
+	.navbar-transparent .navbar-toggler-icon {
+		background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyNC4wLjEsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0i5Zu+5bGCXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzAgMzAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDMwIDMwIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxsaW5lIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiB4MT0iNi4zIiB5MT0iNCIgeDI9IjI3LjEiIHkyPSI0Ii8+DQo8bGluZSBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgeDE9IjYuMyIgeTE9IjEyLjUiIHgyPSIyNy4xIiB5Mj0iMTIuNSIvPg0KPGxpbmUgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHgxPSI2LjMiIHkxPSIyMSIgeDI9IjI3LjEiIHkyPSIyMSIvPg0KPC9zdmc+DQo=);
+	}
+	.navbar-toggler-searcg-icon {
+		background-image: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMzAgMzAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDMwIDMwIiB4bWw6c3BhY2U9InByZXNlcnZlIj48Zz48Y2lyY2xlIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgY3g9IjE0IiBjeT0iMTEuNiIgcj0iOC44Ii8+PGxpbmUgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHgxPSIyMC43IiB5MT0iMTcuNCIgeDI9IjI3LjMiIHkyPSIyNCIvPjwvZz48L3N2Zz4=) !important;
+	}
+
 }
 @media screen and (min-width:900px) and (max-width:1000px){
 	#leftbar_part2.sticky {
@@ -4383,11 +4506,6 @@ html.darkmode.amoled-dark #content:before , html.darkmode.amoled-dark #content:a
 	}
 }
 
-/* wp ulike 样式修改 */
-.wpulike-animated-heart{
-    text-align: center;
-}
-
 /*Safari 兼容*/
 html.using-safari #float_action_buttons .fabtn:before,
 html.using-safari #share > a:before, html.using-safari #share_show:before,
@@ -4414,4 +4532,11 @@ html.using-safari #blog_setting_toggle_darkmode_and_amoledarkmode:before ,
 html.using-safari #blog_setting_card_radius_to_default:before{
 	transform: translate3d(-50%, 0, 0) !important;
 	white-space: nowrap;
+}
+
+ 
+ 
+/* wp ulike 样式修改 */
+.wpulike-animated-heart{
+    text-align: center;
 }
