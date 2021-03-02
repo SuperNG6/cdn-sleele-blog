@@ -279,6 +279,40 @@ window.ASL.ready = function() {
             _this.fixClones();
         }, 2000);
     });
+
+    var ttt;
+    // Known slide-out and other type of menus to initialize on click
+    var triggerSelectors = '#menu-item-search, .fa-search, .fa, .fas';
+    // Avada theme
+    triggerSelectors = triggerSelectors + ', .fusion-flyout-menu-toggle, .fusion-main-menu-search-open';
+    // Be theme
+    triggerSelectors = triggerSelectors + ', #search_button';
+    // The 7 theme
+    triggerSelectors = triggerSelectors + ', .mini-search.popup-search';
+    // Flatsome theme
+    triggerSelectors = triggerSelectors + ', .icon-search';
+    // Enfold theme
+    triggerSelectors = triggerSelectors + ', .menu-item-search-dropdown';
+    // Uncode theme
+    triggerSelectors = triggerSelectors + ', .mobile-menu-button';
+    // Newspaper theme
+    triggerSelectors = triggerSelectors + ', .td-icon-search, .tdb-search-icon';
+    // Bridge theme
+    triggerSelectors = triggerSelectors + ', .side_menu_button, .search_button';
+    // Jupiter theme
+    triggerSelectors = triggerSelectors + ', .raven-search-form-toggle';
+    // Elementor trigger lightbox & other elementor stuff
+    triggerSelectors = triggerSelectors + ', [data-elementor-open-lightbox], .elementor-button-link, .elementor-button';
+
+    // Attach this to the document ready, as it may not attach if this is loaded early
+    scope(function(){
+        scope('body').on('click touchend', triggerSelectors, function(){
+            clearTimeout(ttt);
+            ttt = setTimeout(function(){
+                _this.initialize();
+            }, 500);
+        });
+    });
 };
 
 // Make a reference clone, just in case if an ajax page loader decides to override
