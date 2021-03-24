@@ -1,9 +1,9 @@
 === Q2W3 Fixed Widget for WordPress ===
 Contributors: webzunft, max-bond, advancedads
 Tags: fixed widget, sticky widget, sidebar, ads, widget
-Requires at least: 4.0
-Tested up to: 5.2
-Stable tag: 5.1.9
+Requires at least: 5.0
+Tested up to: 5.7
+Stable tag: 5.3.0
 
 More attention and a higher ad performance with fixed sticky widgets.
 
@@ -73,13 +73,26 @@ There are two options: `Disable Width` and `Disable Height`. They works the same
 
 == Changelog ==
 
+= 5.3.0 =
+
+- fixed option not saving when using the Gutenberg plugin to edit sidebars with block editor
+- disabled scripts and output on AMP pages since sticky widgets are not part of the AMP standard
+- removed explicit translation files since all translations are handled through https://translate.wordpress.org/projects/wp-plugins/q2w3-fixed-widget/
+
+= 5.2.0 =
+
+- Added `q2w3-fixed-widget-sidebar-options` filter for widget options in the frontend.
+
 = 5.1.9 =
-* Fixed JavaScript events which were not called in some setups. 
+
+* Fixed JavaScript events which were not called in some setups.
 
 = 5.1.8 =
+
 * Fixed JavaScript bug that caused jumping / flickering of fixed widgets.
 
 = 5.1.7 =
+
 * Fixed "a.target.className.indexOf is not a function" bug
 
 = 5.1.6 =
