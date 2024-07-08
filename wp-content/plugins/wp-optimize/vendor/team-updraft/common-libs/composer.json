@@ -8,7 +8,7 @@
         "phpcompatibility/php-compatibility": "9.3.*",
         "wp-coding-standards/wpcs": "2.1.*",
         "dealerdirect/phpcodesniffer-composer-installer": "0.5.*",
-        "sirbrillig/phpcs-variable-analysis": "2.7.*"
+        "sirbrillig/phpcs-variable-analysis": "2.11.*"
     },
 	"prefer-stable" : true
 }
