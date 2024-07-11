@@ -11,7 +11,7 @@
 		"ext-fileinfo": "*",
 		"ext-json": "*",
 		"ext-openssl": "*",
-		"automattic/jetpack-a8c-mc-stats": "^1.4",
+		"automattic/jetpack-a8c-mc-stats": "^2.0",
 		"automattic/jetpack-abtest": "^1.9",
 		"automattic/jetpack-assets": "^1.11",
 		"automattic/jetpack-autoloader": "^2.10",
