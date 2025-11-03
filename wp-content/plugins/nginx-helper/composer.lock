@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "f8ee8d46fadaee8c9cc194ef126e7404",
+    "content-hash": "6fd8080577d2e9f13280aa0a3ecb8f5c",
     "packages": [
         {
             "name": "composer/installers",
@@ -77,7 +77,7 @@
                 "wordpress",
                 "zend"
             ],
-            "time": "2013-08-20 04:37:09"
+            "time": "2013-08-20T04:37:09+00:00"
         }
     ],
     "packages-dev": [
@@ -136,7 +136,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2015-06-10 15:30:22"
+            "time": "2015-06-10T15:30:22+00:00"
         },
         {
             "name": "wpreadme2markdown/wpreadme2markdown",
@@ -185,16 +185,17 @@
                 "readme",
                 "wordpress"
             ],
-            "time": "2014-05-28 21:28:31"
+            "time": "2014-05-28T21:28:31+00:00"
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": [],
-    "prefer-stable": false,
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": ">=5.3.2"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
